@@ -117,7 +117,7 @@ const CallToAction = () => {
                 Upload Your Assignment Now!
               </Link>
               <a 
-                href="https://wa.me/03236229684" 
+                href="https://wa.me/923236229684" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center transition duration-300 text-lg"

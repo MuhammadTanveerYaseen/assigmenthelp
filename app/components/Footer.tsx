@@ -58,9 +58,9 @@ const Footer = () => {
                 +92 323 622 9684
               </li>
               <li className="mt-4">
-                <a 
-                  href="https://wa.me/03236229684" 
-                  target="_blank" 
+                <a
+                  href="https://wa.me/923236229684"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg flex items-center justify-center transition duration-300 w-full sm:w-auto"
                 >

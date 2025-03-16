@@ -43,7 +43,7 @@ const Header = () => {
               Upload Assignment
             </Link>
             <a 
-              href="https://wa.me/03236229684" 
+              href="https://wa.me/923236229684" 
               target="_blank" 
               rel="noopener noreferrer"
               className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded transition duration-150 flex items-center"
@@ -98,7 +98,7 @@ const Header = () => {
                 Upload Assignment
               </Link>
               <a 
-                href="https://wa.me/03236229684" 
+                href="https://wa.me/923236229684" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded transition duration-150 flex items-center w-fit"

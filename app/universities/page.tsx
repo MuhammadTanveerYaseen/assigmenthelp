@@ -209,7 +209,7 @@ export default function UniversitiesPage() {
             
             <div className="mt-6">
               <a 
-                href="https://wa.me/03236229684" 
+                href="https://wa.me/923236229684" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg inline-flex items-center transition duration-300"
