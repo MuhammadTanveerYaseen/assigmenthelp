@@ -167,10 +167,19 @@ const FileUpload = () => {
         body: form,
       });
 
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        throw new Error('Invalid response from server');
+      }
       
       if (!response.ok) {
         throw new Error(data.error || data.details || 'Upload failed');
+      }
+
+      if (!data.success || !data.data?.document) {
+        throw new Error('Invalid response format from server');
       }
 
       setUploadedFile({
@@ -188,10 +197,13 @@ const FileUpload = () => {
         projectType: ''
       });
       setFile(null);
+      setFileError('');
       
     } catch (error) {
       console.error('Upload error:', error);
-      toast.error(error instanceof Error ? error.message : 'Failed to upload file');
+      const errorMessage = error instanceof Error ? error.message : 'Failed to upload file';
+      toast.error(errorMessage);
+      setFileError(errorMessage);
     } finally {
       setIsSubmitting(false);
       setIsLoading(false);

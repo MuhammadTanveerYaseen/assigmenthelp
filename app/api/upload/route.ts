@@ -74,7 +74,10 @@ export async function POST(request: NextRequest) {
     // Validate request headers
     if (!validateHeaders(request)) {
       return NextResponse.json(
-        { error: 'Invalid content type. Please use multipart/form-data.' },
+        { 
+          success: false,
+          error: 'Invalid content type. Please use multipart/form-data.' 
+        },
         { status: 415 }
       );
     }
@@ -86,9 +89,13 @@ export async function POST(request: NextRequest) {
     // Connect to MongoDB first to ensure database is available
     try {
       await dbConnect();
-    } catch {
+    } catch (error) {
+      console.error('Database connection error:', error);
       return NextResponse.json(
-        { error: 'Database connection failed. Please try again later.' },
+        { 
+          success: false,
+          error: 'Database connection failed. Please try again later.' 
+        },
         { status: 503 }
       );
     }
@@ -110,8 +117,9 @@ export async function POST(request: NextRequest) {
     if (missingFields.length > 0) {
       return NextResponse.json(
         { 
+          success: false,
           error: 'Missing required fields',
-          missingFields 
+          details: `Missing fields: ${missingFields.join(', ')}`
         },
         { status: 400 }
       );
@@ -120,21 +128,30 @@ export async function POST(request: NextRequest) {
     // Validate field formats
     if (!validateEmail(email.trim())) {
       return NextResponse.json(
-        { error: 'Invalid email format' },
+        { 
+          success: false,
+          error: 'Invalid email format' 
+        },
         { status: 400 }
       );
     }
 
     if (!validatePhone(phone.trim())) {
       return NextResponse.json(
-        { error: 'Invalid phone number format' },
+        { 
+          success: false,
+          error: 'Invalid phone number format' 
+        },
         { status: 400 }
       );
     }
 
     if (name.trim().length < 2) {
       return NextResponse.json(
-        { error: 'Name must be at least 2 characters long' },
+        { 
+          success: false,
+          error: 'Name must be at least 2 characters long' 
+        },
         { status: 400 }
       );
     }
@@ -143,6 +160,7 @@ export async function POST(request: NextRequest) {
     if (!isValidFile(file)) {
       return NextResponse.json(
         { 
+          success: false,
           error: 'Invalid file type',
           details: `Please upload a file in one of these formats: ${Object.keys(ALLOWED_FILE_TYPES).map(type => type.split('/')[1]).join(', ')}`,
           receivedType: file.type
@@ -155,6 +173,7 @@ export async function POST(request: NextRequest) {
     if (file.size > MAX_FILE_SIZE) {
       return NextResponse.json(
         { 
+          success: false,
           error: 'File too large',
           details: `Maximum file size is ${MAX_FILE_SIZE / (1024 * 1024)}MB`,
           receivedSize: file.size
@@ -169,8 +188,10 @@ export async function POST(request: NextRequest) {
     try {
       cloudinaryResult = await uploadToCloudinary(buffer);
     } catch (error) {
+      console.error('Cloudinary upload error:', error);
       return NextResponse.json(
         { 
+          success: false,
           error: 'File upload failed',
           details: error instanceof Error ? error.message : 'Failed to upload file to cloud storage'
         },
@@ -227,14 +248,24 @@ export async function POST(request: NextRequest) {
 
     } catch (error) {
       await session.abortTransaction();
-      throw error;
+      console.error('Database transaction error:', error);
+      return NextResponse.json(
+        { 
+          success: false,
+          error: 'Failed to save assignment',
+          details: error instanceof Error ? error.message : 'Database error occurred'
+        },
+        { status: 500 }
+      );
     } finally {
       session.endSession();
     }
 
   } catch (error) {
+    console.error('Server error:', error);
     return NextResponse.json(
       { 
+        success: false,
         error: 'Server error',
         details: error instanceof Error ? error.message : 'An unexpected error occurred'
       },
