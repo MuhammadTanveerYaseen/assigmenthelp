@@ -162,18 +162,27 @@ const FileUpload = () => {
         form.append('projectType', formData.projectType);
       }
 
+      console.log('Sending request to server...');
       const response = await fetch('/api/upload', {
         method: 'POST',
         body: form,
       });
 
+      console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+
       let data;
       try {
-        data = await response.json();
+        const text = await response.text();
+        console.log('Raw response:', text);
+        data = JSON.parse(text);
       } catch (parseError) {
+        console.error('JSON parse error:', parseError);
         throw new Error('Invalid response from server');
       }
       
+      console.log('Parsed response:', data);
+
       if (!response.ok) {
         throw new Error(data.error || data.details || 'Upload failed');
       }

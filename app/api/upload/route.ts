@@ -73,12 +73,17 @@ export async function POST(request: NextRequest) {
   try {
     // Validate request headers
     if (!validateHeaders(request)) {
-      return NextResponse.json(
-        { 
+      return new NextResponse(
+        JSON.stringify({ 
           success: false,
           error: 'Invalid content type. Please use multipart/form-data.' 
-        },
-        { status: 415 }
+        }),
+        { 
+          status: 415,
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
       );
     }
 
@@ -91,12 +96,17 @@ export async function POST(request: NextRequest) {
       await dbConnect();
     } catch (error) {
       console.error('Database connection error:', error);
-      return NextResponse.json(
-        { 
+      return new NextResponse(
+        JSON.stringify({ 
           success: false,
           error: 'Database connection failed. Please try again later.' 
-        },
-        { status: 503 }
+        }),
+        { 
+          status: 503,
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
       );
     }
 
@@ -115,70 +125,100 @@ export async function POST(request: NextRequest) {
     if (!phone?.trim()) missingFields.push('phone');
 
     if (missingFields.length > 0) {
-      return NextResponse.json(
-        { 
+      return new NextResponse(
+        JSON.stringify({ 
           success: false,
           error: 'Missing required fields',
           details: `Missing fields: ${missingFields.join(', ')}`
-        },
-        { status: 400 }
+        }),
+        { 
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
       );
     }
 
     // Validate field formats
     if (!validateEmail(email.trim())) {
-      return NextResponse.json(
-        { 
+      return new NextResponse(
+        JSON.stringify({ 
           success: false,
           error: 'Invalid email format' 
-        },
-        { status: 400 }
+        }),
+        { 
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
       );
     }
 
     if (!validatePhone(phone.trim())) {
-      return NextResponse.json(
-        { 
+      return new NextResponse(
+        JSON.stringify({ 
           success: false,
           error: 'Invalid phone number format' 
-        },
-        { status: 400 }
+        }),
+        { 
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
       );
     }
 
     if (name.trim().length < 2) {
-      return NextResponse.json(
-        { 
+      return new NextResponse(
+        JSON.stringify({ 
           success: false,
           error: 'Name must be at least 2 characters long' 
-        },
-        { status: 400 }
+        }),
+        { 
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
       );
     }
 
     // Validate file type
     if (!isValidFile(file)) {
-      return NextResponse.json(
-        { 
+      return new NextResponse(
+        JSON.stringify({ 
           success: false,
           error: 'Invalid file type',
           details: `Please upload a file in one of these formats: ${Object.keys(ALLOWED_FILE_TYPES).map(type => type.split('/')[1]).join(', ')}`,
           receivedType: file.type
-        },
-        { status: 400 }
+        }),
+        { 
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
       );
     }
 
     // Validate file size
     if (file.size > MAX_FILE_SIZE) {
-      return NextResponse.json(
-        { 
+      return new NextResponse(
+        JSON.stringify({ 
           success: false,
           error: 'File too large',
           details: `Maximum file size is ${MAX_FILE_SIZE / (1024 * 1024)}MB`,
           receivedSize: file.size
-        },
-        { status: 400 }
+        }),
+        { 
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
       );
     }
 
@@ -189,13 +229,18 @@ export async function POST(request: NextRequest) {
       cloudinaryResult = await uploadToCloudinary(buffer);
     } catch (error) {
       console.error('Cloudinary upload error:', error);
-      return NextResponse.json(
-        { 
+      return new NextResponse(
+        JSON.stringify({ 
           success: false,
           error: 'File upload failed',
           details: error instanceof Error ? error.message : 'Failed to upload file to cloud storage'
-        },
-        { status: 500 }
+        }),
+        { 
+          status: 500,
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
       );
     }
 
@@ -229,33 +274,46 @@ export async function POST(request: NextRequest) {
 
       await session.commitTransaction();
 
-      return NextResponse.json({
-        success: true,
-        data: {
-          assignment: {
-            id: assignment[0]._id,
-            name: assignment[0].name,
-            email: assignment[0].email,
-            status: assignment[0].status
-          },
-          document: {
-            id: document[0]._id,
-            url: document[0].url,
-            filename: document[0].filename
+      return new NextResponse(
+        JSON.stringify({
+          success: true,
+          data: {
+            assignment: {
+              id: assignment[0]._id,
+              name: assignment[0].name,
+              email: assignment[0].email,
+              status: assignment[0].status
+            },
+            document: {
+              id: document[0]._id,
+              url: document[0].url,
+              filename: document[0].filename
+            }
+          }
+        }),
+        { 
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
           }
         }
-      });
+      );
 
     } catch (error) {
       await session.abortTransaction();
       console.error('Database transaction error:', error);
-      return NextResponse.json(
-        { 
+      return new NextResponse(
+        JSON.stringify({ 
           success: false,
           error: 'Failed to save assignment',
           details: error instanceof Error ? error.message : 'Database error occurred'
-        },
-        { status: 500 }
+        }),
+        { 
+          status: 500,
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
       );
     } finally {
       session.endSession();
@@ -263,13 +321,18 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Server error:', error);
-    return NextResponse.json(
-      { 
+    return new NextResponse(
+      JSON.stringify({ 
         success: false,
         error: 'Server error',
         details: error instanceof Error ? error.message : 'An unexpected error occurred'
-      },
-      { status: 500 }
+      }),
+      { 
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }
     );
   }
 } 
