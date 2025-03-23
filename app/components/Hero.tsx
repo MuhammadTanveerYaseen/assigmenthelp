@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from 'react';
-import { submitContactForm, validateForm } from '../utils/formHandlers';
+import { validateForm } from '../utils/formHandlers';
 import Link from 'next/link';
 
 const Hero = () => {

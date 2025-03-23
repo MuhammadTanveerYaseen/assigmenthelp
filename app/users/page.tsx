@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { userApi, User } from '@/lib/api';
+import { api, User } from '@/lib/api';
 
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([]);
@@ -15,10 +15,10 @@ export default function UsersPage() {
 
   const fetchUsers = async () => {
     try {
-      const data = await userApi.getAllUsers();
+      const data = await api.users.getAll();
       setUsers(data);
-    } catch (err) {
-      setError('Failed to fetch users');
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Failed to fetch users');
     } finally {
       setLoading(false);
     }
@@ -27,20 +27,20 @@ export default function UsersPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const createdUser = await userApi.createUser(newUser);
+      const createdUser = await api.users.create(newUser);
       setUsers([...users, createdUser]);
       setNewUser({ name: '', email: '' });
-    } catch (err) {
-      setError('Failed to create user');
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Failed to create user');
     }
   };
 
   const handleDelete = async (id: string) => {
     try {
-      await userApi.deleteUser(id);
+      await api.users.delete(id);
       setUsers(users.filter(user => user._id !== id));
-    } catch (err) {
-      setError('Failed to delete user');
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Failed to delete user');
     }
   };
 

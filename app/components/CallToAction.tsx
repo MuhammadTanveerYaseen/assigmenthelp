@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { submitContactForm, validateForm } from '../utils/formHandlers';
+import { validateForm } from '../utils/formHandlers';
 import { ToastContainer, toast } from 'react-toastify';
 
 const CallToAction = () => {

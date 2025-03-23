@@ -4,7 +4,6 @@ import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { api } from '@/lib/api';
 
 // Error boundary component
 class ErrorBoundary extends React.Component<
@@ -306,17 +305,17 @@ const FileUpload = () => {
 
         {/* Main Content with padding for fixed header */}
         <div className="container mx-auto px-4 pt-48 pb-8">
-          <div className="bg-white p-6 rounded-lg shadow-xl">
-            <ToastContainer 
-              position="top-right" 
-              autoClose={5000} 
-              hideProgressBar={false}
-              newestOnTop
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
+      <div className="bg-white p-6 rounded-lg shadow-xl">
+        <ToastContainer 
+          position="top-right" 
+          autoClose={5000} 
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
               theme="colored"
             />
 
@@ -334,140 +333,140 @@ const FileUpload = () => {
                 </div>
               </div>
             </div>
-            
-            <form className="space-y-4" onSubmit={handleSubmit}>
-              <div>
-                <label htmlFor="name" className="block text-gray-700 mb-1">Full Name</label>
-                <input 
-                  type="text" 
-                  id="name" 
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 ${
-                    formErrors.name ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  placeholder="Your Name"
-                  disabled={isSubmitting}
-                />
-                {formErrors.name && (
-                  <p className="text-red-500 text-sm mt-1">{formErrors.name}</p>
-                )}
-              </div>
-              
-              <div>
-                <label htmlFor="email" className="block text-gray-700 mb-1">Email</label>
-                <input 
-                  type="email" 
-                  id="email" 
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 ${
-                    formErrors.email ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  placeholder="your.email@example.com"
-                  disabled={isSubmitting}
-                />
-                {formErrors.email && (
-                  <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>
-                )}
-              </div>
-              
-              <div>
-                <label htmlFor="phone" className="block text-gray-700 mb-1">Phone Number</label>
-                <input 
-                  type="tel" 
-                  id="phone" 
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 ${
-                    formErrors.phone ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  placeholder="Your Phone Number"
-                  disabled={isSubmitting}
-                />
-                {formErrors.phone && (
-                  <p className="text-red-500 text-sm mt-1">{formErrors.phone}</p>
-                )}
-              </div>
-              
-              <div>
-                <label htmlFor="projectType" className="block text-gray-700 mb-1">Project Type</label>
-                <select 
-                  id="projectType" 
-                  name="projectType"
-                  value={formData.projectType}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
-                  disabled={isSubmitting}
-                >
-                  <option value="">Select Project Type</option>
-                  <option value="assignment">Assignment</option>
-                  <option value="final-year">Final Year Project</option>
-                  <option value="thesis">Thesis/Dissertation</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-gray-700 mb-1">Upload File</label>
-                <div
-                  {...getRootProps()}
-                  className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
-                    ${isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'}
-                    ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
-                >
-                  <input {...getInputProps()} disabled={isSubmitting} />
-                  {isDragActive ? (
-                    <p className="text-blue-500">Drop the file here</p>
-                  ) : (
-                    <div>
-                      <p className="text-gray-500">
-                        Drag and drop a file here, or click to select a file
-                      </p>
-                      {file && (
-                        <p className="text-green-600 mt-2">
-                          Selected: {file.name} ({formatFileSize(file.size)})
-                        </p>
-                      )}
-                    </div>
+        
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="name" className="block text-gray-700 mb-1">Full Name</label>
+            <input 
+              type="text" 
+              id="name" 
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 ${
+                formErrors.name ? 'border-red-500' : 'border-gray-300'
+              }`}
+              placeholder="Your Name"
+              disabled={isSubmitting}
+            />
+            {formErrors.name && (
+              <p className="text-red-500 text-sm mt-1">{formErrors.name}</p>
+            )}
+          </div>
+          
+          <div>
+            <label htmlFor="email" className="block text-gray-700 mb-1">Email</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 ${
+                formErrors.email ? 'border-red-500' : 'border-gray-300'
+              }`}
+              placeholder="your.email@example.com"
+              disabled={isSubmitting}
+            />
+            {formErrors.email && (
+              <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>
+            )}
+          </div>
+          
+          <div>
+            <label htmlFor="phone" className="block text-gray-700 mb-1">Phone Number</label>
+            <input 
+              type="tel" 
+              id="phone" 
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 ${
+                formErrors.phone ? 'border-red-500' : 'border-gray-300'
+              }`}
+              placeholder="Your Phone Number"
+              disabled={isSubmitting}
+            />
+            {formErrors.phone && (
+              <p className="text-red-500 text-sm mt-1">{formErrors.phone}</p>
+            )}
+          </div>
+          
+          <div>
+            <label htmlFor="projectType" className="block text-gray-700 mb-1">Project Type</label>
+            <select 
+              id="projectType" 
+              name="projectType"
+              value={formData.projectType}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+              disabled={isSubmitting}
+            >
+              <option value="">Select Project Type</option>
+              <option value="assignment">Assignment</option>
+              <option value="final-year">Final Year Project</option>
+              <option value="thesis">Thesis/Dissertation</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          
+          <div>
+            <label className="block text-gray-700 mb-1">Upload File</label>
+            <div
+              {...getRootProps()}
+              className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
+                ${isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'}
+                ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              <input {...getInputProps()} disabled={isSubmitting} />
+              {isDragActive ? (
+                <p className="text-blue-500">Drop the file here</p>
+              ) : (
+                <div>
+                  <p className="text-gray-500">
+                    Drag and drop a file here, or click to select a file
+                  </p>
+                  {file && (
+                    <p className="text-green-600 mt-2">
+                      Selected: {file.name} ({formatFileSize(file.size)})
+                    </p>
                   )}
                 </div>
-                {fileError && (
-                  <p className="text-red-500 text-sm mt-1">{fileError}</p>
-                )}
-              </div>
-              
-              <button 
-                type="submit" 
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-300 flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Uploading...
-                  </>
-                ) : (
-                  'Upload Assignment'
-                )}
-              </button>
-            </form>
+              )}
+            </div>
+            {fileError && (
+              <p className="text-red-500 text-sm mt-1">{fileError}</p>
+            )}
+          </div>
+          
+          <button 
+            type="submit" 
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-300 flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Uploading...
+              </>
+            ) : (
+              'Upload Assignment'
+            )}
+          </button>
+        </form>
 
-            {isLoading && <LoadingSpinner />}
+        {isLoading && <LoadingSpinner />}
 
-            {uploadedFile && (
-              <div className="mt-4 p-4 bg-green-50 rounded-lg">
+        {uploadedFile && (
+          <div className="mt-4 p-4 bg-green-50 rounded-lg">
                 <p className="text-green-700">Assignment details sent successfully!</p>
-                <p className="text-sm text-gray-600 mt-1">
-                  Filename: {uploadedFile.filename}
-                </p>
-                <div className="mt-2 space-x-2">
+            <p className="text-sm text-gray-600 mt-1">
+              Filename: {uploadedFile.filename}
+            </p>
+            <div className="mt-2 space-x-2">
                   <button
                     onClick={() => {
                       const whatsappMessage = `New Assignment Submission\n\n` +
@@ -486,9 +485,9 @@ const FileUpload = () => {
                   >
                     Resend on WhatsApp
                   </button>
-                </div>
-              </div>
-            )}
+            </div>
+          </div>
+        )}
           </div>
         </div>
       </div>
