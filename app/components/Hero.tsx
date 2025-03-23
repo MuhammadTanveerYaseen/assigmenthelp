@@ -48,30 +48,39 @@ const Hero = () => {
     setIsSubmitting(true);
     
     try {
-      const result = await submitContactForm(formData);
+      // Create a detailed message for WhatsApp
+      const whatsappMessage = `New Quick Contact Request\n\n` +
+        `📝 Contact Details:\n` +
+        `Name: ${formData.name.trim()}\n` +
+        `Email: ${formData.email.trim()}\n` +
+        `Phone: ${formData.phone.trim()}\n` +
+        `Project Type: ${formData.projectType}\n\n` +
+        `🎉 Special Offer: 20% off on your first assignment!\n\n` +
+        `Please provide more details about your requirements.`;
+
+      // Create WhatsApp URL with the message
+      const whatsappUrl = `https://wa.me/923236229684?text=${encodeURIComponent(whatsappMessage)}`;
       
-      if (result.success) {
-        setSubmitResult({
-          success: true,
-          message: 'Thank you for your interest! We will contact you shortly.'
-        });
-        // Reset form
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          projectType: ''
-        });
-      } else {
-        setSubmitResult({
-          success: false,
-          message: result.error || 'Something went wrong. Please try again.'
-        });
-      }
+      // Open WhatsApp in a new tab
+      window.open(whatsappUrl, '_blank');
+
+      setSubmitResult({
+        success: true,
+        message: 'WhatsApp opened! Please send your message to get started.'
+      });
+
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        projectType: ''
+      });
+      
     } catch (error) {
       setSubmitResult({
         success: false,
-        message: error instanceof Error ? error.message : 'An unexpected error occurred. Please try again later.'
+        message: error instanceof Error ? error.message : 'Failed to open WhatsApp. Please try again.'
       });
     } finally {
       setIsSubmitting(false);

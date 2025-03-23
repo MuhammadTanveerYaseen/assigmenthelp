@@ -1,5 +1,7 @@
 'use client';
 
+import { api } from '@/lib/api';
+
 /**
  * Utility functions for handling form submissions
  */
@@ -15,21 +17,15 @@ export async function submitContactForm(formData: {
   projectType?: string;
 }) {
   try {
-    const response = await fetch('/api/contact', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
+    const response = await api.contact.create({
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      phone: formData.phone.trim(),
+      message: formData.message?.trim() || '',
+      projectType: formData.projectType || ''
     });
-
-    const data = await response.json();
     
-    if (!response.ok) {
-      throw new Error(data.error || 'Failed to submit form');
-    }
-    
-    return { success: true, data };
+    return { success: true, data: response };
   } catch (error) {
     console.error('Error submitting contact form:', error);
     return { 
@@ -59,18 +55,9 @@ export async function uploadAssignment(file: File, formData: {
       form.append('projectType', formData.projectType);
     }
     
-    const response = await fetch('/api/upload', {
-      method: 'POST',
-      body: form,
-    });
-
-    const data = await response.json();
+    const response = await api.upload.create(form);
     
-    if (!response.ok) {
-      throw new Error(data.error || 'Failed to upload file');
-    }
-    
-    return { success: true, data };
+    return { success: true, data: response };
   } catch (error) {
     console.error('Error uploading assignment:', error);
     return { 
